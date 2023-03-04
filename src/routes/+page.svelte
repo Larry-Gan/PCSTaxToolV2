@@ -124,9 +124,9 @@
 <div class="index">
     <form>
         <label for="fname">Yearly Income:</label>
-        <input type="number" class = "income-entry" bind:value={yearlyIncome}><br><br>
+        <input type="number" class = "income-entry" bind:value={yearlyIncome} on:input={calcTaxes}><br><br>
         <label for="pin">Fiscal Year:</label>
-        <select bind:value={year} on:change="{() => answer = ''}">
+        <select bind:value={year} on:change={calcTaxes}>
             {#each tax_data.supportedYears as supportedYear}
                 <option value={supportedYear.value}>
                     {supportedYear.label}
@@ -134,7 +134,7 @@
             {/each}
         </select>
         <label for="pin">Marital Status:</label>
-        <select bind:value={marrStatus} on:change="{() => answer = ''}">
+        <select bind:value={marrStatus} on:change={calcTaxes}>
             {#each tax_data.personType as marry_status}
                 <option value={marry_status.value}>
                     {marry_status.label}
