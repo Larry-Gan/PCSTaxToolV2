@@ -1,45 +1,6 @@
 <script>
   import * as tax_data from './lib/data.js';
-  /*import { Chart } from 'svelte-chartjs'
-  import Chart from 'chart.js';
-  import { onMount } from 'svelte';
-  import {
-      Chart as ChartJS,
-      Tooltip,
-      Legend,
-      BarElement,
-      PointElement,
-      LineElement,
-      CategoryScale,
-      LinearScale,
-      LineController,
-      BarController,
-  } from 'chart.js';
 
-  ChartJS.register(
-      LinearScale,
-      CategoryScale,
-      BarElement,
-      PointElement,
-      LineElement,
-      Legend,
-      Tooltip,
-      LineController,
-      BarController
-  );
-  let ctx;
-/**
-   * @type {HTMLCanvasElement}
-   */
-/*let chartCanvas;
-  let chartData = tax_data.defaultSpend2022;
-  onMount(async () => {
-    ctx = chartCanvas.getContext('2d');
-    // @ts-ignore
-    var chart = new Chart(ctx, tax_data.defaultSpend2022);
-
-});
-  */
   let yearlyIncome = 0;
   let year = '2022';
   let marrStatus = 'single';
@@ -48,7 +9,7 @@
 
   // @ts-ignore
   function calcTaxes() {
-       let intIncome = yearlyIncome;
+      let intIncome = yearlyIncome;
       let curr_taxes = 0;
 
       // grab correct tax data for year
@@ -105,8 +66,8 @@
       // update tax info
       taxes = curr_taxes + socSec + medicare;
       afterTax = intIncome - taxes;
-
-      // code that fills in chart data
+      return yearlyIncome;
+      // TODO: code that fills in chart.js data
       /*let yourPayments = [medicare, socSec]
       for (let i = 2; i < govtSpendingPercents.length; i++) {
           yourPayments.push(govtSpendingPercents[i] * taxes);
@@ -122,9 +83,8 @@ let answer = '';
 </script>
 
 <div class="index">
-  <form>
+  <form on:submit|preventDefault={() => yearlyIncome = calcTaxes()}>
       <label for="fname">Yearly Income:</label>
-      <!--Pressing enter resets the page on input and I'm not sure why-->
       <input type="number" class = "income-entry" bind:value={yearlyIncome} on:input={calcTaxes}><br><br>
       <label for="pin">Fiscal Year:</label>
       <select bind:value={year} on:change={calcTaxes}>
@@ -144,8 +104,7 @@ let answer = '';
       </select>
       <br>
       <br>
-      <!--Commenting this out for now because it resets the page on input and I'm not sure why-->
-      <!--<input type="submit" value="Calculate Taxes!"-->
+      <input type="submit" value="Calculate Taxes!">
     </form>
 </div> 
 
@@ -154,9 +113,6 @@ let answer = '';
 <p>Income: {yearlyIncome}</p>
 <p>Total Taxes paid: {taxes}</p>
 <p>After Tax Income: {afterTax}</p>
-
-<!--<canvas bind:this={chartCanvas} id="myChart"></canvas>
-<Chart bind:chart type="pie" {chartData}/>-->
 
 <style>
   .index {
