@@ -13,7 +13,7 @@
       console.log(standard_deduction)
       let taxable_income = Math.max(gross_income - standard_deduction, 0);
       console.log(taxable_income);
-      let curr_taxes = 0;
+      let income_taxes = 0;
 
       // grab correct tax data for year
       // @ts-ignore
@@ -25,14 +25,14 @@
       // calculate income tax
       for (let i = 1; i < salaries.length; i++) {
           if (taxable_income >= salaries[i]) {
-              curr_taxes += (salaries[i] - salaries[i-1])*rates[i-1];
+              income_taxes += (salaries[i] - salaries[i-1])*rates[i-1];
           } else {
-              curr_taxes += (taxable_income - salaries[i - 1])*rates[i-1];
+              income_taxes += (taxable_income - salaries[i - 1])*rates[i-1];
           break;
           }
       }
       if (taxable_income > salaries[salaries.length-1]) {
-          curr_taxes += (taxable_income - salaries[salaries.length-1])*rates[rates.length-1];
+          income_taxes += (taxable_income - salaries[salaries.length-1])*rates[rates.length-1];
       }
 
       // calculate fica
@@ -67,7 +67,7 @@
       }
 
       // update tax info
-      taxes = curr_taxes + socSec + medicare;
+      taxes = income_taxes + socSec + medicare;
       afterTax = gross_income - taxes;
       return gross_income;
       // TODO: code that fills in chart.js data
