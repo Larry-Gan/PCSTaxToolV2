@@ -1,7 +1,7 @@
 import * as tax_data from './data.js';
 // @ts-ignore
 import {yearlyIncome, year, marrStatus, taxes, afterTax} from "./+page.svelte"
-
+// I was trying to make helper functions here, very much a work in progress, this file isn't being used rn
 
 // @ts-ignore
 export function calcTaxes() {

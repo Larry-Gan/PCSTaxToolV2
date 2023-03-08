@@ -1,7 +1,7 @@
 <script>
   import * as tax_data from './lib/data.js';
 
-  let yearlyIncome = 0;
+  let gross_income = 0;
   let year = '2022';
   let marrStatus = 'single';
   let taxes = 0;
@@ -9,7 +9,10 @@
 
   // @ts-ignore
   function calcTaxes() {
-      let intIncome = yearlyIncome;
+      let standard_deduction = tax_data.yearToTax[year]["standard_deduction"][marrStatus];
+      console.log(standard_deduction)
+      let taxable_income = Math.max(gross_income - standard_deduction, 0);
+      console.log(taxable_income);
       let curr_taxes = 0;
 
       // grab correct tax data for year
@@ -21,52 +24,52 @@
 
       // calculate income tax
       for (let i = 1; i < salaries.length; i++) {
-          if (intIncome >= salaries[i]) {
+          if (taxable_income >= salaries[i]) {
               curr_taxes += (salaries[i] - salaries[i-1])*rates[i-1];
           } else {
-              curr_taxes += (intIncome - salaries[i - 1])*rates[i-1];
+              curr_taxes += (taxable_income - salaries[i - 1])*rates[i-1];
           break;
           }
       }
-      if (intIncome > salaries[salaries.length-1]) {
-          curr_taxes += (intIncome - salaries[salaries.length-1])*rates[rates.length-1];
+      if (taxable_income > salaries[salaries.length-1]) {
+          curr_taxes += (taxable_income - salaries[salaries.length-1])*rates[rates.length-1];
       }
 
       // calculate fica
       let socSec = 0;
-      if (intIncome > currMap["ss"]) {
+      if (taxable_income > currMap["ss"]) {
           socSec = currMap["ss"] * .062;
       } else {
-          socSec = intIncome * .062;
+          socSec = gross_income * .062;
       }
       let medicare = 0;
       if (marrStatus == "single" || marrStatus == "head") {
-          if (intIncome > 200000) {
-          medicare = intIncome * .0145
-          medicare += (intIncome - 200000) * .0235;
+          if (taxable_income > 200000) {
+          medicare = gross_income * .0145
+          medicare += (gross_income - 200000) * .0235;
           } else {
-          medicare = intIncome * .0145;
+          medicare = gross_income * .0145;
           }
       } else if (marrStatus == "seperate") {
-          if (intIncome > 125000) {
-          medicare = intIncome * .0145
-          medicare += (intIncome - 125000) * .0235;
+          if (gross_income > 125000) {
+          medicare = gross_income * .0145
+          medicare += (gross_income - 125000) * .0235;
           } else {
-          medicare = intIncome * .0145;
+          medicare = gross_income * .0145;
           }
       } else if (marrStatus == "together") {
-          if (intIncome > 250000) {
-          medicare = intIncome * .0145
-          medicare += (intIncome - 250000) * .0235;
+          if (gross_income > 250000) {
+          medicare = gross_income * .0145
+          medicare += (gross_income - 250000) * .0235;
           } else {
-          medicare = intIncome * .0145;
+          medicare = gross_income * .0145;
           }
       }
 
       // update tax info
       taxes = curr_taxes + socSec + medicare;
-      afterTax = intIncome - taxes;
-      return yearlyIncome;
+      afterTax = gross_income - taxes;
+      return gross_income;
       // TODO: code that fills in chart.js data
       /*let yourPayments = [medicare, socSec]
       for (let i = 2; i < govtSpendingPercents.length; i++) {
@@ -83,9 +86,9 @@ let answer = '';
 </script>
 
 <div class="index">
-  <form on:submit|preventDefault={() => yearlyIncome = calcTaxes()}>
+  <form on:submit|preventDefault={() => gross_income = calcTaxes()}>
       <label for="fname">Yearly Income:</label>
-      <input type="number" class = "income-entry" bind:value={yearlyIncome} on:input={calcTaxes}><br><br>
+      <input type="number" class = "income-entry" bind:value={gross_income} on:input={calcTaxes}><br><br>
       <label for="pin">Fiscal Year:</label>
       <select bind:value={year} on:change={calcTaxes}>
           {#each tax_data.supportedYears as supportedYear}
@@ -110,7 +113,7 @@ let answer = '';
 
 <p>Year: {year}</p>
 <p>Marital Status: {marrStatus}</p>
-<p>Income: {yearlyIncome}</p>
+<p>Income: {gross_income}</p>
 <p>Total Taxes paid: {taxes}</p>
 <p>After Tax Income: {afterTax}</p>
 
