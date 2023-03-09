@@ -10,9 +10,7 @@
   // @ts-ignore
   function calcTaxes() {
       let standard_deduction = tax_data.yearToTax[year]["standard_deduction"][marrStatus];
-      console.log(standard_deduction)
       let taxable_income = Math.max(gross_income - standard_deduction, 0);
-      console.log(taxable_income);
       let income_taxes = 0;
 
       // grab correct tax data for year
