@@ -17,8 +17,7 @@ After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder a
 3. Make the necessary changes and test that they work locally.
 
 4. One you've implemented the changes push you changes remotely and create a pull request.
-
-Pull requests should discuss the background of why it was necessary, the changes you made to the files and generally how they work, and how you tested the changes as well as pictures of the final result.
+   Pull requests should discuss the background of why it was necessary, the changes you made to the files and generally how they work, and how you tested the changes as well as pictures of the final result.
 
 5. This repo is set so that other contributors have to comment on your pull requests in order for them to be able to be merged. Take their opinions into account and update our code accoringly!
 
