@@ -12,7 +12,7 @@ After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder a
 
 1. Assign a ticket to yourself.
 
-2. Create a new branch using `git checkout -b {your branch name here}`. Try to name the branch according to what what ou're actually doing. For example, if you want to add support for the standard deduction, you should name the branch something along the line of "add-standard-deduction".
+2. Create a new branch using `git checkout -b {your branch name here}`. Try to name the branch according to what what you're actually doing. For example, if you want to add support for the standard deduction, you should name the branch something along the line of "add-standard-deduction".
 
 3. Make the necessary changes and test that they work locally.
 
