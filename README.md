@@ -1,10 +1,12 @@
 # PCS Tax Tool V2
 
-This template should help get you started developing with Svelte in Vite.
+This tool is designed to calculate the expected tax liability for individuals/households hosted at https://larry-gan.github.io/PCSTaxToolV2/?. It's made as part of a project for Political Computer Science @ Berkeley and is built using svelte. The previous version was built using React, and can be found [here](https://github.com/Larry-Gan/PCSTaxTool).
 
-## Recommended IDE Setup
+## Recommended Setup:
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+I recommend downloading [VS Code](https://code.visualstudio.com/) an installing the [Svelte Plugin](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). You need to also download [Node.js](https://nodejs.dev/en/download/).
+
+After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder and run `npm install`, `npm run build`, and `npm run dev`. Those commands will set up the project and run it locally. You should be able to go to http://localhost:5173/PCSTaxToolV2/ to see the project.
 
 ## Need an official Svelte framework?
 
