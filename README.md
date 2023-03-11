@@ -21,6 +21,6 @@ After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder a
 
 5. This repo is set so that other contributors have to comment on your pull requests in order for them to be able to be merged. Take their opinions into account and update your code accoringly!
 
-6. Once the pull request has enough approvals, you can merge the pull request using Rebase and Merge.
+6. Once the pull request has enough approvals, you can merge the pull request using Squash and Merge.
 
 7. Automatic website updating upon merge isn't enabled yet, so right now you need to run `npm run deploy` locally on the main branch after merge.
