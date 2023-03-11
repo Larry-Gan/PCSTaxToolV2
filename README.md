@@ -23,4 +23,4 @@ After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder a
 
 6. Once the pull request has enough approvals, you can merge the pull request using Squash and Merge.
 
-7. Automatic website updating upon merge isn't enabled yet, so right now you need to run `npm run deploy` locally on the main branch after merge.
+7. Automatic website updating upon merge isn't enabled yet, so right now you need to run `npm run build` followed by `npm run deploy` locally on the main branch after merge in order to have the website update.
