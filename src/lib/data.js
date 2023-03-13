@@ -55,7 +55,12 @@ export const mappings2018 = {
 .0060,
 .0045,
 .0029,
-.0069,]
+.0069,],
+"LT_capital_gains_percents": [0., .15, .2],
+"LT_capital_gains_single": [0, 38700, 426700],
+"LT_capital_gains_seperate": [0, 38700, 240025],
+"LT_capital_gains_together": [0, 77400, 480050],
+"LT_capital_gains_head": [0, 51850, 453350]
 };
 
 export const mappings2019 = {
@@ -85,7 +90,12 @@ export const mappings2019 = {
 .0059,
 .0061,
 .0037,
-.0048,]
+.0048,],
+"LT_capital_gains_percents": [0., .15, .2],
+"LT_capital_gains_single": [0, 39376, 434550],
+"LT_capital_gains_seperate": [0, 39376, 244425],
+"LT_capital_gains_together": [0, 78751, 488850],
+"LT_capital_gains_head": [0, 52751, 461700]
 };
 
 export const mappings2020 = {
@@ -95,7 +105,12 @@ export const mappings2020 = {
 "together": [0, 19750, 80250, 171050, 326600, 414700, 622050],
 "head": [0, 14100, 53700, 85500, 163300, 207350, 518400],
 "ss": 137700,
-"budget_percents": [0.1452, 0.1261, 0.1203, 0.1038, 0.1592, 0.0604, 0.0649, 0.0269, 0.0102, 0.0313, 0.0215, 0.0201, 0.0084, 0.0101, 0.0714, 0.0045, 0.0045, 0.0034, 0.0077]
+"budget_percents": [0.1452, 0.1261, 0.1203, 0.1038, 0.1592, 0.0604, 0.0649, 0.0269, 0.0102, 0.0313, 0.0215, 0.0201, 0.0084, 0.0101, 0.0714, 0.0045, 0.0045, 0.0034, 0.0077],
+"LT_capital_gains_percents": [0., .15, .2],
+"LT_capital_gains_single": [0, 40000, 441450],
+"LT_capital_gains_seperate": [0, 40000, 248300],
+"LT_capital_gains_together": [0, 80000, 496600],
+"LT_capital_gains_head": [0, 53600, 469050]
 };
 
 export const mappings2021 = {
@@ -105,7 +120,12 @@ export const mappings2021 = {
 "together": [0, 19900, 81050, 172750, 329850, 418850, 628301],
 "head": [0, 14200, 54200, 86350, 164900, 209400, 523600],
 "ss": 142800,
-"budget_percents": [.1374, .1178, .1111, .0998, .1987, .0576, .0696, .0256, .0195, .0505, .0218, .0125, .0078, .0087, .0387, .0041, .0036, .0018, .0131]
+"budget_percents": [.1374, .1178, .1111, .0998, .1987, .0576, .0696, .0256, .0195, .0505, .0218, .0125, .0078, .0087, .0387, .0041, .0036, .0018, .0131],
+"LT_capital_gains_percents": [0., .15, .2],
+"LT_capital_gains_single": [0, 40400, 445850],
+"LT_capital_gains_seperate": [0, 40400, 250800],
+"LT_capital_gains_together": [0, 80800, 501600],
+"LT_capital_gains_head": [0, 54100, 473750]
 };
 
 export const mappings2022 = {
@@ -115,7 +135,12 @@ export const mappings2022 = {
 "together": [0, 20550, 83550, 178150, 340100, 431900, 647850],
 "head": [0, 14650, 55900, 89050, 170050, 215950, 539900],
 "ss": 147000,
-"budget_percents": [.1649, .1528, .1395, .1305, .104, .0894, .0513, .033, .0094, .0254, .0332, .0111, .0098, .0106, .0086, .0049, .0037, .0019, .016]
+"budget_percents": [.1649, .1528, .1395, .1305, .104, .0894, .0513, .033, .0094, .0254, .0332, .0111, .0098, .0106, .0086, .0049, .0037, .0019, .016],
+"LT_capital_gains_percents": [0., .15, .2],
+"LT_capital_gains_single": [0, 41675, 459750],
+"LT_capital_gains_seperate": [0, 41675, 258600],
+"LT_capital_gains_together": [0, 83350, 517200],
+"LT_capital_gains_head": [0, 55800, 488500]
 };
 
 export const yearToTax = {
