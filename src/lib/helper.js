@@ -56,3 +56,17 @@ if (marrStatus == "single" || marrStatus == "head") {
 
 return [socSec, medicare]
 }
+
+export function generateRandomColors(numColors) {
+    const colors1 = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'];
+    const colors2 = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'];
+    for (let i = 0; i < numColors-2; i++) {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      //const a = Math.random().toFixed(1); // generates alpha between 0.0 and 1.0
+      colors1.push(`rgba(${r}, ${g}, ${b}, ${0.2})`);
+      colors2.push(`rgba(${r}, ${g}, ${b}, ${1})`);
+    }
+    return [colors1, colors2];
+  }
