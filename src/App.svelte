@@ -5,7 +5,7 @@
 
   let data = [0];
   let year = '2022';
-  let marrStatus = 'single';
+  let marrStatus = 'Single';
   let grossIncome = 0;
   let afterTaxIncome = 0;
   let totalTaxes = 0;

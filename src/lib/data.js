@@ -16,16 +16,16 @@ export const supportedYears = [
       label: "2022",
     }];
 export const personType = [{
-      value: "single",
+      value: "Single",
       label: "Single",
     }, {
-      value: "seperate",
+      value: "Seperate",
       label: "Seperate",
     }, {
-      value: "together",
+      value: "Together",
       label: "Together",
     }, {
-      value: "head",
+      value: "Head",
       label: "Head",
     }];
 
