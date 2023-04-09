@@ -27,7 +27,7 @@ After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder a
 
 # Pull Request Formatting
 
-Please usew the following format when submitting pull reuqests:
+Please use the following format when submitting pull reuqests:
 
 ### **Background:**
 
