@@ -64,7 +64,6 @@ export function generateRandomColors(numColors) {
       const r = Math.floor(Math.random() * 256);
       const g = Math.floor(Math.random() * 256);
       const b = Math.floor(Math.random() * 256);
-      //const a = Math.random().toFixed(1); // generates alpha between 0.0 and 1.0
       colors1.push(`rgba(${r}, ${g}, ${b}, ${0.2})`);
       colors2.push(`rgba(${r}, ${g}, ${b}, ${1})`);
     }
