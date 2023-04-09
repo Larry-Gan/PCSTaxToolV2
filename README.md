@@ -35,9 +35,9 @@ Give a background on why this change is necessary and why you chose to make the 
 
 ### **Changes:**
 
-Give a general overview of which files you changed and what changes you made to them
+Give a general overview of which files you changed and what changes you made to them.
 
-Go into more detail about what changes were made to every file. Also talk about any assumptions you made while making the changes
+Go into more detail about what changes were made to every file. Also talk about any assumptions you made while making the changes.
 
 ### **Testing:**
 
