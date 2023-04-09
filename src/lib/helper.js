@@ -1,3 +1,8 @@
+export let formatting_options = {
+    style: 'currency',
+    currency: 'USD',
+  };
+
 export function calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus) {
     let incomeTaxes = 0;
     let rates = currYearTaxData["percents"];
@@ -30,7 +35,7 @@ if (grossIncome > currYearTaxData["ss"]) {
     socSec = grossIncome * .062;
 }
 
-// Calculate medicare tax
+// Calculate medicare tax, honestly this can be improved
 let medicare = 0;
 if (marrStatus == "Single" || marrStatus == "Head") {
     if (grossIncome > 200000) {
@@ -77,3 +82,14 @@ export function generateRandomColors(numColors) {
     // Return the color of the pie and the pie outline
     return [pieColor, pieOutlineColor];
   }
+
+  
+  export function turnToDollar(num) {
+    // num.toLocaleString errors when run on null values, there's probably a better way to fix this issue
+    if (num == null) {
+        num = 0;
+    }
+    
+    return num.toLocaleString("en-US", formatting_options);
+  }
+

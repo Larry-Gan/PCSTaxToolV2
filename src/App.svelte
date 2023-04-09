@@ -3,6 +3,7 @@
   import * as helper from './lib/helper.js';
   import Chart from './lib/Chart.svelte';
 
+  // Declare global variables to hold tax info
   let data = [0];
   let year = '2022';
   let marrStatus = 'Single';
@@ -19,10 +20,9 @@
       let govtSpendingPercents = currYearTaxData["budgetPercents"];
 
       // Calculate proportion of income taxes going towards each service
-      let yourPayments = [medicareTaxes, socialSecurityTaxes]
+      let yourPayments = [medicareTaxes, socialSecurityTaxes];
       for (let i = 2; i < govtSpendingPercents.length; i++) {
           let taxAmount = govtSpendingPercents[i] * incomeTaxes;
-          taxAmount = Math.round((taxAmount + Number.EPSILON) * 100) / 100;
           yourPayments.push(taxAmount);
       }
 
@@ -31,6 +31,11 @@
   }
 
   function calcTaxes() {
+      // Handle null cases (some entries end up being null and mess up the rest of the code)
+      if (grossIncome == null || grossIncome < 0) {
+        grossIncome = 0;
+      }
+
       // Grab correct tax data for year
       let currYearTaxData = taxData.yearToTax[year];
 
@@ -84,12 +89,12 @@
 
 <p>Year: {year}</p>
 <p>Marital Status: {marrStatus}</p>
-<p>Gross Income: ${grossIncome.toLocaleString("en-US")}</p>
-<p>After Tax Income: ${afterTaxIncome.toLocaleString("en-US")}</p>
-<p>Total Taxes Paid: ${totalTaxes.toLocaleString("en-US")}</p>
-<p>Total Income Taxes Paid: ${incomeTaxes.toLocaleString("en-US")}</p>
-<p>Total Medicare Taxes Paid: ${medicareTaxes.toLocaleString("en-US")}</p>
-<p>Total Social Security Taxes Paid: ${socialSecurityTaxes.toLocaleString("en-US")}</p>
+<p>Gross Income: {helper.turnToDollar(grossIncome)}</p>
+<p>After Tax Income: {helper.turnToDollar(afterTaxIncome)}</p>
+<p>Total Taxes Paid: {helper.turnToDollar(totalTaxes)}</p>
+<p>Total Income Taxes Paid: {helper.turnToDollar(incomeTaxes)}</p>
+<p>Total Medicare Taxes Paid: {helper.turnToDollar(medicareTaxes)}</p>
+<p>Total Social Security Taxes Paid: {helper.turnToDollar(socialSecurityTaxes)}</p>
 
 <div>
     <Chart {data}/>

@@ -2,10 +2,11 @@
     import { onMount } from 'svelte';
     import Chart from 'chart.js/auto';
     import { budgetGroup } from './data.js';
-    import { generateRandomColors } from './helper.js';
+    import { generateRandomColors, formatting_options } from './helper.js';
     export let data;
     let chart;
 
+    // Handle updates to the chart
     $: if (chart){
 			chart.data.datasets[0].data = data;
 			chart.update()
@@ -13,6 +14,7 @@
 
     onMount(() => {
       const ctx = document.getElementById('myChart');
+      // Generate chart colors on load
       let colors = generateRandomColors(budgetGroup.length);
       let backgroundcolors = colors[0];
       let bordercolors = colors[1];
@@ -22,6 +24,7 @@
         data: {
           labels: budgetGroup,
           datasets: [{
+            label: "Amount spent",
             data: data,
             backgroundColor: backgroundcolors,
             borderColor: bordercolors,
@@ -37,7 +40,16 @@
                 boxHeight: 0,
                 callbacks: {
                   label: function (context) {
-                      return "$" + context.formattedValue;
+                    // Convert number into dollar format, taken directly from the chart.js website
+                    let label = context.dataset.label || '';
+
+                    if (label) {
+                        label += ': ';
+                    }
+                    if (context.parsed !== null) {
+                        label += new Intl.NumberFormat('en-US', formatting_options).format(context.parsed);
+                    }
+                    return label;
                   }
                 }
               },
