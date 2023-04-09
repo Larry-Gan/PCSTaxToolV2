@@ -41,15 +41,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          // below currently doesn't do anything
-          plugins : {
-            tooltip : {
-              boxWidth: 0,
-              boxHeight: 0
-            },
-          }
-        },
-        
+        }
       });
     });
   </script>
