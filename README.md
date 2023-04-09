@@ -10,9 +10,9 @@ After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder a
 
 ## How to make changes:
 
-1. Assign a ticket to yourself.
+1. Assign a ticket from Issues to yourself.
 
-2. Create a new branch using `git checkout -b {your branch name here}`. Try to name the branch according to what what you're actually doing. For example, if you want to add support for the standard deduction, you should name the branch something along the line of "add-standard-deduction".
+2.Enter the issue and click on `Create a branch` underneath Development in the sidbar. Try to name the branch according to what what you're actually doing. For example, if you want to add support for the standard deduction, you should name the branch something along the line of "add-standard-deduction". Then checkout the branch locally. This is preferred so the branch is automatically linked with the issue Alternatively, you could create a new branch using `git checkout -b {your branch name here}`.
 
 3. Make the necessary changes and test that they work locally.
 
@@ -24,3 +24,22 @@ After cloning the repo and downloading node.js, enter the /PCSTaxToolV2 folder a
 6. Once the pull request has enough approvals, you can merge the pull request using Squash and Merge.
 
 7. Automatic website updating upon merge isn't enabled yet, so right now you need to run `npm run build` followed by `npm run deploy` locally on the main branch after merge in order to have the website update.
+
+# Pull Request Formatting
+
+Please usew the following format when submitting pull reuqests:
+
+### **Background:**
+
+Give a background on why this change is necessary and why you chose to make the change.
+
+### **Changes:**
+
+Give a general overview of which files you changed and what changes you made to them
+
+Go into more detail about what changes were made to every file. Also talk about any assumptions you made while making the changes
+
+### **Testing:**
+
+Test the changes locally using `npm run dev` in the PCSTaxToolV2 folder.
+Post screenshots of the tax tool running after changes have been made.
