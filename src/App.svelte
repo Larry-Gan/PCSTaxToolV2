@@ -15,6 +15,12 @@
     let socialSecurityTaxes = 0;
     let medicareTaxes = 0;
 
+    // May use this one later for updating text and pie chart
+    function handleFormSubmission () {
+        grossIncome = calcTaxes();
+        updateChart();
+    }
+
     function updateChart() {
         // Grab correct tax data for year
         let currYearTaxData = taxData.yearToTax[year];
