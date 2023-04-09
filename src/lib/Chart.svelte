@@ -20,10 +20,8 @@
       chart = new Chart(ctx, {
         type: 'pie',
         data: {
-          //labels: label,
           labels: budgetGroup,
           datasets: [{
-            label: "Spending in USD",
             data: data,
             backgroundColor: backgroundcolors,
             borderColor: bordercolors,
@@ -33,6 +31,17 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          plugins : {
+              tooltip : {
+                boxWidth: 0,
+                boxHeight: 0,
+                callbacks: {
+                  label: function (context) {
+                      return "$" + context.formattedValue;
+                  }
+                }
+              },
+            },
         }
       });
     });

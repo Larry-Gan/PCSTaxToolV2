@@ -21,7 +21,9 @@
       // Calculate proportion of income taxes going towards each service
       let yourPayments = [medicareTaxes, socialSecurityTaxes]
       for (let i = 2; i < govtSpendingPercents.length; i++) {
-          yourPayments.push(govtSpendingPercents[i] * incomeTaxes);
+          let taxAmount = govtSpendingPercents[i] * incomeTaxes;
+          taxAmount = Math.round((taxAmount + Number.EPSILON) * 100) / 100;
+          yourPayments.push(taxAmount);
       }
 
       // Return data to fill in chart.js chart
@@ -82,12 +84,12 @@
 
 <p>Year: {year}</p>
 <p>Marital Status: {marrStatus}</p>
-<p>Gross Income: {grossIncome}</p>
-<p>After Tax Income: {afterTaxIncome}</p>
-<p>Total Taxes Paid: {totalTaxes}</p>
-<p>Total Income Taxes Paid: {incomeTaxes}</p>
-<p>Total Medicare Taxes Paid: {medicareTaxes}</p>
-<p>Total Social Security Taxes Paid: {socialSecurityTaxes}</p>
+<p>Gross Income: ${grossIncome.toLocaleString("en-US")}</p>
+<p>After Tax Income: ${afterTaxIncome.toLocaleString("en-US")}</p>
+<p>Total Taxes Paid: ${totalTaxes.toLocaleString("en-US")}</p>
+<p>Total Income Taxes Paid: ${incomeTaxes.toLocaleString("en-US")}</p>
+<p>Total Medicare Taxes Paid: ${medicareTaxes.toLocaleString("en-US")}</p>
+<p>Total Social Security Taxes Paid: ${socialSecurityTaxes.toLocaleString("en-US")}</p>
 
 <div>
     <Chart {data}/>
