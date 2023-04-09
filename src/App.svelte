@@ -8,6 +8,7 @@
   let year = '2022';
   let marrStatus = 'Single';
   let grossIncome = 0;
+  let prevGrossIncome = 0;
   let afterTaxIncome = 0;
   let totalTaxes = 0;
   let incomeTaxes = 0;
@@ -32,10 +33,15 @@
 
   function calcTaxes() {
       // Handle null cases (some entries end up being null and mess up the rest of the code)
-      if (grossIncome == null) {
+      /*if (grossIncome == null) {
         grossIncome = 0;
       } else if (grossIncome < 0) {
         grossIncome = -grossIncome;
+      }*/
+      if (grossIncome == null || grossIncome < 0) {
+        grossIncome = prevGrossIncome;
+      } else {
+        prevGrossIncome = grossIncome;
       }
 
       // Grab correct tax data for year
@@ -66,7 +72,7 @@
 <div class="index">
   <form on:submit|preventDefault={() => grossIncome = calcTaxes()}>
       <label for="fname">Yearly Income:</label>
-      <input type="number" class = "income-entry" bind:value={grossIncome} on:input={calcTaxes}><br><br>
+      <input type="number" step=0.01 class = "income-entry" bind:value={grossIncome} on:input={calcTaxes}><br><br>
       <label for="pin">Fiscal Year:</label>
       <select bind:value={year} on:change={calcTaxes}>
           {#each taxData.supportedYears as supportedYear}
