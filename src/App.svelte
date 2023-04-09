@@ -32,8 +32,10 @@
 
   function calcTaxes() {
       // Handle null cases (some entries end up being null and mess up the rest of the code)
-      if (grossIncome == null || grossIncome < 0) {
+      if (grossIncome == null) {
         grossIncome = 0;
+      } else if (grossIncome < 0) {
+        grossIncome = -grossIncome;
       }
 
       // Grab correct tax data for year
