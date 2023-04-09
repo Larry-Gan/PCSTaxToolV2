@@ -1,20 +1,25 @@
 <script>
-  import * as taxData from './lib/data.js';
+//   import * as taxData from './lib/data.js';
+  import taxData from './lib/data.json';
   import * as helper from './lib/helper.js';
 
   let grossIncome = 0;
-  let year = '2022';
-  let marrStatus = 'single';
+  let year = "2022";
+  let marrStatus = "single";
   let totalTaxes = 0;
   let afterTax = 0;
 
   function calcTaxes() {
       // calculate standard deduction and taxable income
-      let standardDeduction = taxData.yearToTax[year]["standardDeduction"][marrStatus];
+      const mapping = "mappings"+year;
+      let standardDeduction = taxData.yearToTax[year][mapping]["standardDeduction"][marrStatus];
+
       let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
-      
+     
       // grab correct tax data for year
-      let currMap = taxData.yearToTax[year];
+      let currMap = taxData.yearToTax[year][mapping];
+      
+    //   console.log(currMap2[mapping]["percents"])
       let govtSpendingPercents = currMap["budgetPercents"];
 
       // calculate income tax

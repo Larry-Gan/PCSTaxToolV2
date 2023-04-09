@@ -4,7 +4,7 @@ export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
     let incomeTaxes = 0;
     let rates = currMap["percents"];
     let salaries = currMap[marrStatus];
-
+    
     // calculate income tax
     for (let i = 1; i < salaries.length; i++) {
         if (taxableIncome >= salaries[i]) {
