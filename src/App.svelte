@@ -15,8 +15,8 @@
 
   function updateChart() {
       // Grab correct tax data for year
-      let currMap = taxData.yearToTax[year];
-      let govtSpendingPercents = currMap["budgetPercents"];
+      let currYearTaxData = taxData.yearToTax[year];
+      let govtSpendingPercents = currYearTaxData["budgetPercents"];
 
       // Calculate proportion of income taxes going towards each service
       let yourPayments = [medicareTaxes, socialSecurityTaxes]
@@ -30,17 +30,17 @@
 
   function calcTaxes() {
       // Grab correct tax data for year
-      let currMap = taxData.yearToTax[year];
+      let currYearTaxData = taxData.yearToTax[year];
 
       // Calculate standard deduction and taxable income
-      let standardDeduction = currMap["standardDeduction"][marrStatus];
+      let standardDeduction = currYearTaxData["standardDeduction"][marrStatus];
       let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
 
       // Calculate income tax
-      incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currMap, marrStatus);
+      incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus);
 
       // Calculate fica
-      let fica = helper.calcFicaTaxes(grossIncome, currMap, marrStatus);
+      let fica = helper.calcFicaTaxes(grossIncome, currYearTaxData, marrStatus);
       socialSecurityTaxes = fica[0];
       medicareTaxes = fica[1];
 

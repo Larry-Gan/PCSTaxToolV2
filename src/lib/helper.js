@@ -1,7 +1,7 @@
-export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
+export function calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus) {
     let incomeTaxes = 0;
-    let rates = currMap["percents"];
-    let salaries = currMap[marrStatus];
+    let rates = currYearTaxData["percents"];
+    let salaries = currYearTaxData[marrStatus];
 
     // Loop through tax brackets and apply tax rates to corresponding brackets
     for (let i = 1; i < salaries.length; i++) {
@@ -13,18 +13,19 @@ export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
         }
     }
 
-    // Loop misses taxes in the largets salary bands, this if statement takes care fo that issue
+    // Loop misses taxes in the largest salary bands, this if statement takes care of that issue
     if (taxableIncome > salaries[salaries.length-1]) {
         incomeTaxes += (taxableIncome - salaries[salaries.length-1])*rates[rates.length-1];
     }
+
     return incomeTaxes;
 }
 
-export function calcFicaTaxes(grossIncome, currMap, marrStatus) {
+export function calcFicaTaxes(grossIncome, currYearTaxData, marrStatus) {
 // Calculate social security tax
 let socSec = 0;
-if (grossIncome > currMap["ss"]) {
-    socSec = currMap["ss"] * .062;
+if (grossIncome > currYearTaxData["ss"]) {
+    socSec = currYearTaxData["ss"] * .062;
 } else {
     socSec = grossIncome * .062;
 }
