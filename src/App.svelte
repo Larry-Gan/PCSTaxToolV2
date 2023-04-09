@@ -40,9 +40,9 @@
     function calcTaxes() {
         // Handle null cases and negative negative numbers by revereting them to the previous gross income
         if (grossIncome == null || grossIncome < 0) {
-        grossIncome = prevGrossIncome;
+            grossIncome = prevGrossIncome;
         } else {
-        prevGrossIncome = grossIncome;
+            prevGrossIncome = grossIncome;
         }
 
         // Grab correct tax data for year
