@@ -18,6 +18,8 @@
       let colors = generateRandomColors(budgetGroup.length);
       let backgroundcolors = colors[0];
       let bordercolors = colors[1];
+      
+      // Generate chart
       // @ts-ignore
       chart = new Chart(ctx, {
         type: 'pie',
@@ -35,25 +37,27 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins : {
-              tooltip : {
-                boxWidth: 0,
-                boxHeight: 0,
-                callbacks: {
-                  label: function (context) {
-                    // Convert number into dollar format, taken directly from the chart.js website
-                    let label = context.dataset.label || '';
+            tooltip : {
+              // Remove label box
+              boxWidth: 0,
+              boxHeight: 0,
+              // Format label into dollars
+              callbacks: {
+                label: function (context) {
+                  // Convert number into dollar format, taken directly from the chart.js website
+                  let label = context.dataset.label || '';
 
-                    if (label) {
-                        label += ': ';
-                    }
-                    if (context.parsed !== null) {
-                        label += new Intl.NumberFormat('en-US', formatting_options).format(context.parsed);
-                    }
-                    return label;
+                  if (label) {
+                      label += ': ';
                   }
+                  if (context.parsed !== null) {
+                      label += new Intl.NumberFormat('en-US', formatting_options).format(context.parsed);
+                  }
+                  return label;
                 }
-              },
+              }
             },
+          },
         }
       });
     });

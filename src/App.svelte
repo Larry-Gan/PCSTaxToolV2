@@ -1,71 +1,66 @@
 <script>
-  import * as taxData from './lib/data.js';
-  import * as helper from './lib/helper.js';
-  import Chart from './lib/Chart.svelte';
+    import * as taxData from './lib/data.js';
+    import * as helper from './lib/helper.js';
+    import Chart from './lib/Chart.svelte';
 
-  // Declare global variables to hold tax info
-  let data = [0];
-  let year = '2022';
-  let marrStatus = 'Single';
-  let grossIncome = 0;
-  let prevGrossIncome = 0;
-  let afterTaxIncome = 0;
-  let totalTaxes = 0;
-  let incomeTaxes = 0;
-  let socialSecurityTaxes = 0;
-  let medicareTaxes = 0;
+    // Declare global variables to hold tax info
+    let data = [0];
+    let year = '2022';
+    let marrStatus = 'Single';
+    let grossIncome = 0;
+    let prevGrossIncome = 0;
+    let afterTaxIncome = 0;
+    let totalTaxes = 0;
+    let incomeTaxes = 0;
+    let socialSecurityTaxes = 0;
+    let medicareTaxes = 0;
 
-  function updateChart() {
-      // Grab correct tax data for year
-      let currYearTaxData = taxData.yearToTax[year];
-      let govtSpendingPercents = currYearTaxData["budgetPercents"];
+    function updateChart() {
+        // Grab correct tax data for year
+        let currYearTaxData = taxData.yearToTax[year];
+        let govtSpendingPercents = currYearTaxData["budgetPercents"];
 
-      // Calculate proportion of income taxes going towards each service
-      let yourPayments = [medicareTaxes, socialSecurityTaxes];
-      for (let i = 2; i < govtSpendingPercents.length; i++) {
-          let taxAmount = govtSpendingPercents[i] * incomeTaxes;
-          yourPayments.push(taxAmount);
-      }
+        // Calculate proportion of income taxes going towards each service
+        let yourPayments = [medicareTaxes, socialSecurityTaxes];
+        for (let i = 2; i < govtSpendingPercents.length; i++) {
+            let taxAmount = govtSpendingPercents[i] * incomeTaxes;
+            yourPayments.push(taxAmount);
+        }
 
-      // Return data to fill in chart.js chart
-      return yourPayments;
-  }
+        // Return data to fill in chart.js chart
+        return yourPayments;
+    }
 
-  function calcTaxes() {
-      // Handle null cases (some entries end up being null and mess up the rest of the code)
-      /*if (grossIncome == null) {
-        grossIncome = 0;
-      } else if (grossIncome < 0) {
-        grossIncome = -grossIncome;
-      }*/
-      if (grossIncome == null || grossIncome < 0) {
+    function calcTaxes() {
+        // Handle null cases and negative negative numbers by revereting them to the previous gross income
+        if (grossIncome == null || grossIncome < 0) {
         grossIncome = prevGrossIncome;
-      } else {
+        } else {
         prevGrossIncome = grossIncome;
-      }
+        }
 
-      // Grab correct tax data for year
-      let currYearTaxData = taxData.yearToTax[year];
+        // Grab correct tax data for year
+        let currYearTaxData = taxData.yearToTax[year];
 
-      // Calculate standard deduction and taxable income
-      let standardDeduction = currYearTaxData["standardDeduction"][marrStatus];
-      let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
+        // Calculate standard deduction and taxable income
+        let standardDeduction = currYearTaxData["standardDeduction"][marrStatus];
+        let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
 
-      // Calculate income tax
-      incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus);
+        // Calculate income tax
+        incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus);
 
-      // Calculate fica
-      let fica = helper.calcFicaTaxes(grossIncome, currYearTaxData, marrStatus);
-      socialSecurityTaxes = fica[0];
-      medicareTaxes = fica[1];
+        // Calculate fica
+        let fica = helper.calcFicaTaxes(grossIncome, currYearTaxData, marrStatus);
+        socialSecurityTaxes = fica[0];
+        medicareTaxes = fica[1];
 
-      // Update tax info
-      totalTaxes = incomeTaxes + socialSecurityTaxes + medicareTaxes;
-      afterTaxIncome = grossIncome - totalTaxes;
+        // Update tax info
+        totalTaxes = incomeTaxes + socialSecurityTaxes + medicareTaxes;
+        afterTaxIncome = grossIncome - totalTaxes;
 
-      // Return grossIncome, which prevents variable from being changed on form submission
-      return grossIncome;
-}
+        // Return grossIncome, which prevents variable from being changed on form submission
+        return grossIncome;
+    }
 
 </script>
 
