@@ -29,12 +29,12 @@
   }
 
   function calcTaxes() {
-      // Calculate standard deduction and taxable income
-      let standardDeduction = taxData.yearToTax[year]["standardDeduction"][marrStatus];
-      let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
-      
       // Grab correct tax data for year
       let currMap = taxData.yearToTax[year];
+
+      // Calculate standard deduction and taxable income
+      let standardDeduction = currMap["standardDeduction"][marrStatus];
+      let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
 
       // Calculate income tax
       incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currMap, marrStatus);

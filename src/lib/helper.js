@@ -1,19 +1,19 @@
-import * as taxData from './data.js';
-
 export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
     let incomeTaxes = 0;
     let rates = currMap["percents"];
     let salaries = currMap[marrStatus];
 
-    // calculate income tax
+    // Loop through tax brackets and apply tax rates to corresponding brackets
     for (let i = 1; i < salaries.length; i++) {
         if (taxableIncome >= salaries[i]) {
             incomeTaxes += (salaries[i] - salaries[i-1])*rates[i-1];
         } else {
             incomeTaxes += (taxableIncome - salaries[i - 1])*rates[i-1];
-        break;
+            break;
         }
     }
+
+    // Loop misses taxes in the largets salary bands, this if statement takes care fo that issue
     if (taxableIncome > salaries[salaries.length-1]) {
         incomeTaxes += (taxableIncome - salaries[salaries.length-1])*rates[rates.length-1];
     }
@@ -21,7 +21,7 @@ export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
 }
 
 export function calcFicaTaxes(grossIncome, currMap, marrStatus) {
-// calculate social security tax
+// Calculate social security tax
 let socSec = 0;
 if (grossIncome > currMap["ss"]) {
     socSec = currMap["ss"] * .062;
@@ -29,44 +29,50 @@ if (grossIncome > currMap["ss"]) {
     socSec = grossIncome * .062;
 }
 
-// calculate medicare tax
+// Calculate medicare tax
 let medicare = 0;
-if (marrStatus == "single" || marrStatus == "head") {
+if (marrStatus == "Single" || marrStatus == "Head") {
     if (grossIncome > 200000) {
-    medicare = 200000 * .0145
-    medicare += (grossIncome - 200000) * .0235;
+        medicare = 200000 * .0145
+        medicare += (grossIncome - 200000) * .0235;
     } else {
-    medicare = grossIncome * .0145;
+        medicare = grossIncome * .0145;
     }
-} else if (marrStatus == "seperate") {
+} else if (marrStatus == "Seperate") {
     if (grossIncome > 125000) {
-    medicare = 125000 * .0145
-    medicare += (grossIncome - 125000) * .0235;
+        medicare = 125000 * .0145
+        medicare += (grossIncome - 125000) * .0235;
     } else {
-    medicare = grossIncome * .0145;
+       medicare = grossIncome * .0145;
     }
-} else if (marrStatus == "together") {
+} else if (marrStatus == "Together") {
     if (grossIncome > 250000) {
-    medicare = 250000 * .0145
-    medicare += (grossIncome - 250000) * .0235;
+        medicare = 250000 * .0145
+        medicare += (grossIncome - 250000) * .0235;
     } else {
-    medicare = grossIncome * .0145;
+        medicare = grossIncome * .0145;
     }
 }
 
+// Return both social security tax and medicare tax, to be split up later
 return [socSec, medicare]
 }
 
 export function generateRandomColors(numColors) {
-    const colors1 = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'];
-    const colors2 = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'];
+    // Make two colors with different opacity, pie body color is less opaque
+    // Start off with the color red for medicare and blue for social security
+    const pieColor = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'];
+    const pieOutlineColor = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'];
+
+    // Generate another random color for each additional category we need
     for (let i = 0; i < numColors-2; i++) {
       const r = Math.floor(Math.random() * 256);
       const g = Math.floor(Math.random() * 256);
       const b = Math.floor(Math.random() * 256);
-      //const a = Math.random().toFixed(1); // generates alpha between 0.0 and 1.0
-      colors1.push(`rgba(${r}, ${g}, ${b}, ${0.2})`);
-      colors2.push(`rgba(${r}, ${g}, ${b}, ${1})`);
+      pieColor.push(`rgba(${r}, ${g}, ${b}, ${0.2})`);
+      pieOutlineColor.push(`rgba(${r}, ${g}, ${b}, ${1})`);
     }
-    return [colors1, colors2];
+
+    // Return the color of the pie and the pie outline
+    return [pieColor, pieOutlineColor];
   }
