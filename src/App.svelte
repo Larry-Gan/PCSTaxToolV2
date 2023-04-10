@@ -1,5 +1,5 @@
 <script>
-  import * as taxData from './lib/data.js';
+  import taxData from './lib/data.json';
   import * as helper from './lib/helper.js';
 
   let grossIncome = 0;
