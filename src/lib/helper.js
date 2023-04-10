@@ -1,5 +1,3 @@
-import * as taxData from './data.js';
-
 export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
     let incomeTaxes = 0;
     let rates = currMap["percents"];
