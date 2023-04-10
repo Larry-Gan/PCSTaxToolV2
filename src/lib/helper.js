@@ -36,7 +36,7 @@ if (marrStatus == "single" || marrStatus == "head") {
     } else {
     medicare = grossIncome * .0145;
     }
-} else if (marrStatus == "seperate") {
+} else if (marrStatus == "separte") {
     if (grossIncome > 125000) {
     medicare = 125000 * .0145
     medicare += (grossIncome - 125000) * .0235;
