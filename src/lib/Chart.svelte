@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
-  import { budgetGroup } from './data.js';
+  import taxData from './data.json';
   import { generateRandomColors, formatting_options } from './helper.js';
   export let data;
   let chart;
@@ -15,7 +15,7 @@
   onMount(() => {
     const ctx = document.getElementById('myChart');
     // Generate chart colors on load
-    let colors = generateRandomColors(budgetGroup.length);
+    let colors = generateRandomColors(taxData["budgetgroup"].length);
     let backgroundcolors = colors[0];
     let bordercolors = colors[1];
     
@@ -24,7 +24,7 @@
     chart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: budgetGroup,
+        labels: taxData["budgetgroup"],
         datasets: [{
           label: "Amount spent",
           data: data,
