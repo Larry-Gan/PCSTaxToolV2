@@ -1,75 +1,56 @@
-import * as tax_data from './data.js';
-// @ts-ignore
-import {yearlyIncome, year, marrStatus, taxes, afterTax} from "./+page.svelte"
-// I was trying to make helper functions here, very much a work in progress, this file isn't being used rn
-
-// @ts-ignore
-export function calcTaxes() {
-    let intIncome = yearlyIncome //parseInt(yearlyIncome);
-    let curr_taxes = 0;
-
-    // grab correct tax data for year
-    // @ts-ignore
-    let currMap = tax_data.yearToTax[year];
+export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
+    let incomeTaxes = 0;
     let rates = currMap["percents"];
     let salaries = currMap[marrStatus];
-    // @ts-ignore
-    let govtSpendingPercents = currMap["budget_percents"];
 
     // calculate income tax
     for (let i = 1; i < salaries.length; i++) {
-        if (intIncome >= salaries[i]) {
-            curr_taxes += (salaries[i] - salaries[i-1])*rates[i-1];
+        if (taxableIncome >= salaries[i]) {
+            incomeTaxes += (salaries[i] - salaries[i-1])*rates[i-1];
         } else {
-            curr_taxes += (intIncome - salaries[i - 1])*rates[i-1];
+            incomeTaxes += (taxableIncome - salaries[i - 1])*rates[i-1];
         break;
         }
     }
-    if (intIncome > salaries[salaries.length-1]) {
-        curr_taxes += (intIncome - salaries[salaries.length-1])*rates[rates.length-1];
+    if (taxableIncome > salaries[salaries.length-1]) {
+        incomeTaxes += (taxableIncome - salaries[salaries.length-1])*rates[rates.length-1];
     }
+    return incomeTaxes;
+}
 
-    // calculate fica
-    let socSec = 0;
-    if (intIncome > currMap["ss"]) {
-        socSec = currMap["ss"] * .062;
+export function calcFicaTaxes(grossIncome, currMap, marrStatus) {
+// calculate social security tax
+let socSec = 0;
+if (grossIncome > currMap["ss"]) {
+    socSec = currMap["ss"] * .062;
+} else {
+    socSec = grossIncome * .062;
+}
+
+// calculate medicare tax
+let medicare = 0;
+if (marrStatus == "single" || marrStatus == "head") {
+    if (grossIncome > 200000) {
+    medicare = 200000 * .0145
+    medicare += (grossIncome - 200000) * .0235;
     } else {
-        socSec = intIncome * .062;
+    medicare = grossIncome * .0145;
     }
-    let medicare = 0;
-    if (marrStatus == "single" || marrStatus == "head") {
-        if (intIncome > 200000) {
-        medicare = intIncome * .0145
-        medicare += (intIncome - 200000) * .0235;
-        } else {
-        medicare = intIncome * .0145;
-        }
-    } else if (marrStatus == "seperate") {
-        if (intIncome > 125000) {
-        medicare = intIncome * .0145
-        medicare += (intIncome - 125000) * .0235;
-        } else {
-        medicare = intIncome * .0145;
-        }
-    } else if (marrStatus == "together") {
-        if (intIncome > 250000) {
-        medicare = intIncome * .0145
-        medicare += (intIncome - 250000) * .0235;
-        } else {
-        medicare = intIncome * .0145;
-        }
+} else if (marrStatus == "separate") {
+    if (grossIncome > 125000) {
+    medicare = 125000 * .0145
+    medicare += (grossIncome - 125000) * .0235;
+    } else {
+    medicare = grossIncome * .0145;
     }
+} else if (marrStatus == "together") {
+    if (grossIncome > 250000) {
+    medicare = 250000 * .0145
+    medicare += (grossIncome - 250000) * .0235;
+    } else {
+    medicare = grossIncome * .0145;
+    }
+}
 
-    // update tax info
-    // @ts-ignore
-    taxes = curr_taxes + socSec + medicare;
-    // @ts-ignore
-    afterTax = intIncome - taxes;
-
-    // code that fills in chart data
-    /*let yourPayments = [medicare, socSec]
-    for (let i = 2; i < govtSpendingPercents.length; i++) {
-        yourPayments.push(govtSpendingPercents[i] * taxes);
-    }*/
-    //return taxes;
+return [socSec, medicare]
 }

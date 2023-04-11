@@ -1,73 +1,36 @@
 <script>
-  import * as tax_data from './lib/data.js';
+  import taxData from './lib/data.json';
+  import * as helper from './lib/helper.js';
 
-  let gross_income = 0;
+  let grossIncome = 0;
   let year = '2022';
   let marrStatus = 'single';
-  let taxes = 0;
+  let totalTaxes = 0;
   let afterTax = 0;
 
-  // @ts-ignore
   function calcTaxes() {
-      let standard_deduction = tax_data.yearToTax[year]["standard_deduction"][marrStatus];
-      let taxable_income = Math.max(gross_income - standard_deduction, 0);
-      let income_taxes = 0;
-
+      // calculate standard deduction and taxable income
+      let standardDeduction = taxData[year]["standardDeduction"][marrStatus];
+      let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
+      
       // grab correct tax data for year
-      // @ts-ignore
-      let currMap = tax_data.yearToTax[year];
-      let rates = currMap["percents"];
-      let salaries = currMap[marrStatus];
-      let govtSpendingPercents = currMap["budget_percents"];
+      let currMap = taxData[year];
+      let govtSpendingPercents = currMap["budgetPercents"];
 
       // calculate income tax
-      for (let i = 1; i < salaries.length; i++) {
-          if (taxable_income >= salaries[i]) {
-              income_taxes += (salaries[i] - salaries[i-1])*rates[i-1];
-          } else {
-              income_taxes += (taxable_income - salaries[i - 1])*rates[i-1];
-          break;
-          }
-      }
-      if (taxable_income > salaries[salaries.length-1]) {
-          income_taxes += (taxable_income - salaries[salaries.length-1])*rates[rates.length-1];
-      }
+      let incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currMap, marrStatus);
 
       // calculate fica
-      let socSec = 0;
-      if (taxable_income > currMap["ss"]) {
-          socSec = currMap["ss"] * .062;
-      } else {
-          socSec = gross_income * .062;
-      }
-      let medicare = 0;
-      if (marrStatus == "single" || marrStatus == "head") {
-          if (taxable_income > 200000) {
-          medicare = gross_income * .0145
-          medicare += (gross_income - 200000) * .0235;
-          } else {
-          medicare = gross_income * .0145;
-          }
-      } else if (marrStatus == "seperate") {
-          if (gross_income > 125000) {
-          medicare = gross_income * .0145
-          medicare += (gross_income - 125000) * .0235;
-          } else {
-          medicare = gross_income * .0145;
-          }
-      } else if (marrStatus == "together") {
-          if (gross_income > 250000) {
-          medicare = gross_income * .0145
-          medicare += (gross_income - 250000) * .0235;
-          } else {
-          medicare = gross_income * .0145;
-          }
-      }
+      let fica = helper.calcFicaTaxes(grossIncome, currMap, marrStatus);
+      let socSec = fica[0];
+      let medicare = fica[1];
 
       // update tax info
-      taxes = income_taxes + socSec + medicare;
-      afterTax = gross_income - taxes;
-      return gross_income;
+      totalTaxes = incomeTaxes + socSec + medicare;
+      afterTax = grossIncome - totalTaxes;
+
+      // return grossIncome 
+      return grossIncome;
       // TODO: code that fills in chart.js data
       /*let yourPayments = [medicare, socSec]
       for (let i = 2; i < govtSpendingPercents.length; i++) {
@@ -84,12 +47,12 @@ let answer = '';
 </script>
 
 <div class="index">
-  <form on:submit|preventDefault={() => gross_income = calcTaxes()}>
+  <form on:submit|preventDefault={() => grossIncome = calcTaxes()}>
       <label for="fname">Yearly Income:</label>
-      <input type="number" class = "income-entry" bind:value={gross_income} on:input={calcTaxes}><br><br>
+      <input type="number" class = "income-entry" bind:value={grossIncome} on:input={calcTaxes}><br><br>
       <label for="pin">Fiscal Year:</label>
       <select bind:value={year} on:change={calcTaxes}>
-          {#each tax_data.supportedYears as supportedYear}
+          {#each taxData.supportedYears as supportedYear}
               <option value={supportedYear.value}>
                   {supportedYear.label}
               </option>
@@ -97,9 +60,9 @@ let answer = '';
       </select>
       <label for="pin">Marital Status:</label>
       <select bind:value={marrStatus} on:change={calcTaxes}>
-          {#each tax_data.personType as marry_status}
-              <option value={marry_status.value}>
-                  {marry_status.label}
+          {#each taxData.personType as marryStatus}
+              <option value={marryStatus.value}>
+                  {marryStatus.label}
               </option>
           {/each}
       </select>
@@ -111,8 +74,8 @@ let answer = '';
 
 <p>Year: {year}</p>
 <p>Marital Status: {marrStatus}</p>
-<p>Income: {gross_income}</p>
-<p>Total Taxes paid: {taxes}</p>
+<p>Income: {grossIncome}</p>
+<p>Total taxes paid: {totalTaxes}</p>
 <p>After Tax Income: {afterTax}</p>
 
 <style>
