@@ -1,5 +1,3 @@
-import * as taxData from './data.js';
-
 export function calcIncomeTaxes(taxableIncome, currMap, marrStatus) {
     let incomeTaxes = 0;
     let rates = currMap["percents"];
@@ -38,7 +36,7 @@ if (marrStatus == "single" || marrStatus == "head") {
     } else {
     medicare = grossIncome * .0145;
     }
-} else if (marrStatus == "seperate") {
+} else if (marrStatus == "separate") {
     if (grossIncome > 125000) {
     medicare = 125000 * .0145
     medicare += (grossIncome - 125000) * .0235;
