@@ -1,5 +1,5 @@
 <script>
-    import * as taxData from './lib/data.js';
+    import taxData from './lib/data.json';
     import * as helper from './lib/helper.js';
     import Chart from './lib/Chart.svelte';
 
@@ -23,7 +23,7 @@
 
     function updateChart() {
         // Grab correct tax data for year
-        let currYearTaxData = taxData.yearToTax[year];
+        let currYearTaxData = taxData[year];
         let govtSpendingPercents = currYearTaxData["budgetPercents"];
 
         // Calculate proportion of income taxes going towards each service
@@ -46,10 +46,10 @@
         }
 
         // Grab correct tax data for year
-        let currYearTaxData = taxData.yearToTax[year];
+        let currYearTaxData = taxData[year];
 
         // Calculate standard deduction and taxable income
-        let standardDeduction = currYearTaxData["standardDeduction"][marrStatus];
+        let standardDeduction = taxData[year]["standardDeduction"][marrStatus];
         let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
 
         // Calculate income tax
