@@ -28,8 +28,8 @@
         "label": "Single"
       },
       {
-        "value": "separete",
-        "label": "Separete"
+        "value": "separate",
+        "label": "separate"
       },
       {
         "value": "together",
@@ -57,7 +57,7 @@
             157500, 
             200000, 
             500000],
-          "separete": [
+          "separate": [
             0, 
             9525, 
             38700, 
@@ -105,7 +105,7 @@
             0.0069],
           "standardDeduction": {
             "single": 12000,
-            "separete": 12000,
+            "separate": 12000,
             "together": 24000,
             "head": 18000
           }
@@ -128,7 +128,7 @@
             160725, 
             204100, 
             510300],
-          "separte": [
+          "separate": [
             0, 
             9700, 
             39475, 
@@ -176,7 +176,7 @@
             0.0048],
           "standardDeduction": {
             "single": 12200,
-            "separte": 12200,
+            "separate": 12200,
             "together": 24400,
             "head": 18350
           }
@@ -199,7 +199,7 @@
               163300, 
               207350, 
               518400],
-            "separte": [
+            "separate": [
               0, 
               9875, 
               40125, 
@@ -246,7 +246,7 @@
               0.0077],
             "standardDeduction": {
               "single": 12400,
-              "separte": 12400,
+              "separate": 12400,
               "together": 24800,
               "head": 18650
             }
@@ -269,7 +269,7 @@
               164925, 
               209425, 
               523600],
-            "separte": [
+            "separate": [
               0, 
               9950, 
               40525, 
@@ -316,7 +316,7 @@
               0.0131],
             "standardDeduction": {
               "single": 12550,
-              "separte": 12550,
+              "separate": 12550,
               "together": 25100,
               "head": 18800
             }
@@ -338,7 +338,7 @@
               170050,
               215950,
               539900],
-            "separte": [
+            "separate": [
               0,
               10275,
               41775,
@@ -385,7 +385,7 @@
               0.016],
             "standardDeduction": {
               "single": 12950,
-              "separte": 12950,
+              "separate": 12950,
               "together": 25900,
               "head": 19400
             }

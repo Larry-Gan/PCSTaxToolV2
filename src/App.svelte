@@ -4,7 +4,7 @@
 
   let grossIncome = 0;
   let year = '2022';
-  let marrStatus = 'single';
+  let marrStatus;
   let totalTaxes = 0;
   let afterTax = 0;
 
@@ -12,7 +12,7 @@
       // calculate standard deduction and taxable income
       let standardDeduction = taxData[year]["standardDeduction"][marrStatus];
       let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
-      
+      console.log(standardDeduction);
       // grab correct tax data for year
       let currMap = taxData[year];
       let govtSpendingPercents = currMap["budgetPercents"];
