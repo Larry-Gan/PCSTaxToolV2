@@ -2,6 +2,7 @@
     import taxData from './lib/data.json';
     import * as helper from './lib/helper.js';
     import Chart from './lib/Chart.svelte';
+    import Simulator from './lib/Simulator.svelte';
 
     // Declare global variables to hold tax info
     let data = [0];
@@ -14,6 +15,10 @@
     let incomeTaxes = 0;
     let socialSecurityTaxes = 0;
     let medicareTaxes = 0;
+
+    // Simulator values
+    let simStartYear = 2022;
+    let simEndYear = 2065
 
     // May use this one later for updating text and pie chart
     function handleFormSubmission () {
@@ -68,6 +73,8 @@
         return grossIncome;
     }
 
+    let simData = []
+
 </script>
 
 <div class="index">
@@ -104,6 +111,19 @@
 <p>Total Income Taxes Paid: {helper.turnToDollar(incomeTaxes)}</p>
 <p>Total Medicare Taxes Paid: {helper.turnToDollar(medicareTaxes)}</p>
 <p>Total Social Security Taxes Paid: {helper.turnToDollar(socialSecurityTaxes)}</p>
+
+
+<label for="fname">Start Year:</label>
+<input type="number" bind:value={simStartYear}>
+<label for="fname">End Year:</label>
+<input type="number"  bind:value={simEndYear}><br><br>
+<label for="fname">Initial Balance:</label>
+<input type="number" bind:value={simStartYear}>
+<label for="fname">End Year:</label>
+<input type="number"  bind:value={simEndYear}><br><br>
+<div>
+    <Simulator savings = {grossIncome} startYear = {simStartYear} endYear = {simEndYear}/>
+</div>
 
 <div>
     <Chart {data}/>
