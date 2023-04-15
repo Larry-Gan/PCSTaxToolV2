@@ -103,6 +103,7 @@
     </form>
 </div> 
 
+
 <p>Year: {year}</p>
 <p>Marital Status: {marrStatus}</p>
 <p>Gross Income: {helper.turnToDollar(grossIncome)}</p>
@@ -112,22 +113,19 @@
 <p>Total Medicare Taxes Paid: {helper.turnToDollar(medicareTaxes)}</p>
 <p>Total Social Security Taxes Paid: {helper.turnToDollar(socialSecurityTaxes)}</p>
 
-
-<label for="fname">Start Year:</label>
-<input type="number" bind:value={simStartYear}>
-<label for="fname">End Year:</label>
-<input type="number"  bind:value={simEndYear}><br><br>
-<label for="fname">Initial Balance:</label>
-<input type="number" bind:value={simStartYear}>
-<label for="fname">End Year:</label>
-<input type="number"  bind:value={simEndYear}><br><br>
+<br><br>
 <div>
-    <Simulator savings = {grossIncome} startYear = {simStartYear} endYear = {simEndYear}/>
+    <!----><Chart {data}/>
 </div>
 
+
+<br>
+
 <div>
-    <Chart {data}/>
+    <!----><Simulator netIncome = {afterTaxIncome}/>
 </div>
+
+
 <style>
   .index {
       text-align: center;

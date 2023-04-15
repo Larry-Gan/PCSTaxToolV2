@@ -63,6 +63,12 @@
   });
 </script>
   
-<canvas id="myChart" width = "700" height = "700"></canvas>
+<h2>
+  Tax Spending Visualization:
+</h2>
+<div>
+  <canvas id="myChart" width = "700" height = "700"></canvas>
+</div>
+
 
   

@@ -1,11 +1,22 @@
 <script>
 	import Chart from 'chart.js/auto';
 	import { onMount } from 'svelte';
-	let chart;
+  import {formatting_options } from './helper.js';
+  /* TODO: 
+      Add filtering for inputs so they all look okay
+      Add options for stocks, bonds, cash
+      Color match with the rest of the text
+      Clean up code
+  */
+	let savingsChart;
 
-  export let savings;
-  export let startYear;
-  export let endYear;
+  export let netIncome;
+
+  let initBalance = 0;
+  let expenses = 0;
+  let interestRate = 7;
+  let startYear = 2022;
+  let endYear = 2065;
 
   function generateLabels(start, end) {
     let holder1 = []
@@ -15,63 +26,143 @@
     return holder1
   }
 
-  function generateData(start, end, offset) {
+  function generateData(start, end) {
+    let currAmt1 = initBalance;
+    let currAmt2 = initBalance;
+    let increases = netIncome - expenses;
     let holder1 = []
     let holder2 = []
     for (let i = start; i <= end; i++) {
-      holder1.push(i);
-      holder2.push(i + offset)
+      currAmt1 = compoundInterest(currAmt1, interestRate) + increases;
+      holder1.push(currAmt1);
+      currAmt2 += increases;
+      holder2.push(currAmt2);
     }
     return [holder1, holder2]
   }
 
-  function compoundInterest(initBalance, interest) {
-    return initBalance * (1 + interest);
+  function updateChart() {
+    // Handle updates to the chart
+    if (savingsChart){
+        let temp = generateData(startYear, endYear)
+        savingsChart.data.datasets[0].data = temp[0];
+        savingsChart.data.datasets[1].data = temp[1];
+        savingsChart.data.labels = generateLabels(startYear, endYear);
+        savingsChart.update()
+      }
   }
 
-  let temp = generateData(0, endYear - startYear, 3)
-	let chartValues = temp[0];
-	let chartValues2 = temp[1];
+  function compoundInterest(initBalance, interest) {
+    return initBalance * (1 + (interest/100));
+  }
+
+  let temp = generateData(0, endYear - startYear)
+	let interestSavings = temp[0];
+	let nonInterestSavings = temp[1];
 	let chartLabels = generateLabels(startYear, endYear);
 	let ctx;
 	let chartCanvas;
 
-  // Handle updates to the chart
-  $: if (chart){
-    let temp = generateData(0, endYear - startYear, 3)
-    chart.data.datasets[0].data = temp[0];
-    chart.data.datasets[1].data = temp[1];
-    chart.data.labels = generateLabels(startYear, endYear);
-    chart.update()
-  }
-
-	onMount(async (promise) => {
+	onMount(() => {
 		  ctx = chartCanvas.getContext('2d');
-			chart = new Chart(ctx, {
+			savingsChart = new Chart(ctx, {
 				type: 'line',
 				data: {
 						labels: chartLabels,
-						datasets: [{
-								label: 'Revenue',
-								backgroundColor: 'rgb(255, 99, 132)',
-								borderColor: 'rgb(255, 99, 132)',
-								data: chartValues
+						datasets: [
+            {
+								label: 'Total Portfolio',
+								backgroundColor: 'rgb(54, 162, 235)',
+								borderColor: 'rgb(54, 162, 235)',
+								data: interestSavings
 						},
             {
-								label: 'Revenue',
-								backgroundColor: 'rgb(255, 205, 86)',
-								borderColor: 'rgb(255, 205, 86)',
-								data: chartValues2
-						}]
+								label: 'Cumulative Contributions',
+								backgroundColor: 'rgb(255, 99, 132)',
+								borderColor: 'rgb(255, 99, 132)',
+								data: nonInterestSavings
+						},]
 				},
         options: {
           responsive: true,
-        } 
-		});
+          plugins: {
+            legend: {
+              labels: {
+                    color: "white",
+                }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+              // Format label into dollars
+              callbacks: {
+                label: function (context) {
+                  // Convert number into dollar format, taken directly from the chart.js website
+                  let label = context.dataset.label || '';
+
+                  if (label) {
+                      label += ': ';
+                  }
+                  if (context.parsed !== null) {
+                      label += new Intl.NumberFormat('en-US', formatting_options).format(context.parsed.y);
+                  }
+                  return label;
+                }
+              }
+            }
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: false
+          },
+          scales: {
+            x: {
+              border: {
+                display: false
+              },
+              ticks: {
+                color: 'white',
+              },
+              grid: {
+                display:false
+              },
+            },
+            y: {
+              border: {
+                display: false
+              },
+              ticks: {
+                color: 'white',
+              },
+              grid: {
+                display: true,
+                color: "white"
+              },
+            }
+          } 
+        }
+		  });
 
 	});
 
 </script>
-
-
-<canvas bind:this={chartCanvas} id="myChart" style="background-color: #fff;"></canvas>
+<h2>
+  Savings and Investment Simulator:
+</h2>
+<form on:submit|preventDefault={updateChart}>
+  <label for="fname">Start Year:</label>
+  <input type="number" bind:value={startYear}>
+  <label for="fname">End Year:</label>
+  <input type="number"  bind:value={endYear}><br><br>
+  <label for="fname">Net Income:</label>
+  <input type="number" step=0.01 bind:value={netIncome}>
+  <label for="fname">Initial Balance:</label>
+  <input type="number" step=0.01 bind:value={initBalance}>
+  <label for="fname">Annual Expenses:</label>
+  <input type="number" step=0.01 bind:value={expenses}><br><br>
+  <label for="fname">Interest Rate:</label>
+  <input type="number" bind:value={interestRate}><br><br>
+  <button type="submit" on:click={updateChart}>Simulate Savings!</button>
+</form>
+<br>
+<canvas bind:this={chartCanvas} id="Income Simulator"></canvas>
