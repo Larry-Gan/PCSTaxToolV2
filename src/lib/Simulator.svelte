@@ -7,6 +7,7 @@
       Add options for stocks, bonds, cash
       Color match with the rest of the text
       Clean up code
+      Add 401k/IRA stuff once that's done
   */
 	let savingsChart;
 
