@@ -1,55 +1,79 @@
 <script>
-  import taxData from './lib/data.json';
-  import * as helper from './lib/helper.js';
+    import taxData from './lib/data.json';
+    import * as helper from './lib/helper.js';
+    import Chart from './lib/Chart.svelte';
 
-  let grossIncome = 0;
-  let year = '2022';
-  let marrStatus = 'single';
-  let totalTaxes = 0;
-  let afterTax = 0;
+    // Declare global variables to hold tax info
+    let data = [0];
+    let year = '2022';
+    let marrStatus = 'Single';
+    let grossIncome = 0;
+    let prevGrossIncome = 0;
+    let afterTaxIncome = 0;
+    let totalTaxes = 0;
+    let incomeTaxes = 0;
+    let socialSecurityTaxes = 0;
+    let medicareTaxes = 0;
 
-  function calcTaxes() {
-      // calculate standard deduction and taxable income
-      let standardDeduction = taxData[year]["standardDeduction"][marrStatus];
-      let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
-      
-      // grab correct tax data for year
-      let currMap = taxData[year];
-      let govtSpendingPercents = currMap["budgetPercents"];
+    // May use this one later for updating text and pie chart
+    function handleFormSubmission () {
+        grossIncome = calcTaxes();
+        updateChart();
+    }
 
-      // calculate income tax
-      let incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currMap, marrStatus);
+    function updateChart() {
+        // Grab correct tax data for year
+        let currYearTaxData = taxData[year];
+        let govtSpendingPercents = currYearTaxData["budgetPercents"];
 
-      // calculate fica
-      let fica = helper.calcFicaTaxes(grossIncome, currMap, marrStatus);
-      let socSec = fica[0];
-      let medicare = fica[1];
+        // Calculate proportion of income taxes going towards each service
+        let yourPayments = [medicareTaxes, socialSecurityTaxes];
+        for (let i = 2; i < govtSpendingPercents.length; i++) {
+            let taxAmount = govtSpendingPercents[i] * incomeTaxes;
+            yourPayments.push(taxAmount);
+        }
 
-      // update tax info
-      totalTaxes = incomeTaxes + socSec + medicare;
-      afterTax = grossIncome - totalTaxes;
+        // Return data to fill in chart.js chart
+        return yourPayments;
+    }
 
-      // return grossIncome 
-      return grossIncome;
-      // TODO: code that fills in chart.js data
-      /*let yourPayments = [medicare, socSec]
-      for (let i = 2; i < govtSpendingPercents.length; i++) {
-          yourPayments.push(govtSpendingPercents[i] * taxes);
-      }*/
-      //return taxes;
-}
-  
-  
+    function calcTaxes() {
+        // Handle null cases and negative negative numbers by revereting them to the previous gross income
+        if (grossIncome == null || grossIncome < 0) {
+            grossIncome = prevGrossIncome;
+        } else {
+            prevGrossIncome = grossIncome;
+        }
 
-let answer = '';
-  
+        // Grab correct tax data for year
+        let currYearTaxData = taxData[year];
+
+        // Calculate standard deduction and taxable income
+        let standardDeduction = taxData[year]["standardDeduction"][marrStatus];
+        let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
+
+        // Calculate income tax
+        incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus);
+
+        // Calculate fica
+        let fica = helper.calcFicaTaxes(grossIncome, currYearTaxData, marrStatus);
+        socialSecurityTaxes = fica[0];
+        medicareTaxes = fica[1];
+
+        // Update tax info
+        totalTaxes = incomeTaxes + socialSecurityTaxes + medicareTaxes;
+        afterTaxIncome = grossIncome - totalTaxes;
+
+        // Return grossIncome, which prevents variable from being changed on form submission
+        return grossIncome;
+    }
 
 </script>
 
 <div class="index">
   <form on:submit|preventDefault={() => grossIncome = calcTaxes()}>
       <label for="fname">Yearly Income:</label>
-      <input type="number" class = "income-entry" bind:value={grossIncome} on:input={calcTaxes}><br><br>
+      <input type="number" step=0.01 class = "income-entry" bind:value={grossIncome} on:input={calcTaxes}><br><br>
       <label for="pin">Fiscal Year:</label>
       <select bind:value={year} on:change={calcTaxes}>
           {#each taxData.supportedYears as supportedYear}
@@ -68,16 +92,22 @@ let answer = '';
       </select>
       <br>
       <br>
-      <input type="submit" value="Calculate Taxes!">
+      <button type="submit" on:click={() => data = updateChart()}>Visualize Taxes!</button>
     </form>
 </div> 
 
 <p>Year: {year}</p>
 <p>Marital Status: {marrStatus}</p>
-<p>Income: {grossIncome}</p>
-<p>Total taxes paid: {totalTaxes}</p>
-<p>After Tax Income: {afterTax}</p>
+<p>Gross Income: {helper.turnToDollar(grossIncome)}</p>
+<p>After Tax Income: {helper.turnToDollar(afterTaxIncome)}</p>
+<p>Total Taxes Paid: {helper.turnToDollar(totalTaxes)}</p>
+<p>Total Income Taxes Paid: {helper.turnToDollar(incomeTaxes)}</p>
+<p>Total Medicare Taxes Paid: {helper.turnToDollar(medicareTaxes)}</p>
+<p>Total Social Security Taxes Paid: {helper.turnToDollar(socialSecurityTaxes)}</p>
 
+<div>
+    <Chart {data}/>
+</div>
 <style>
   .index {
       text-align: center;
