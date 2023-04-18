@@ -8,6 +8,7 @@
       Color match with the rest of the text
       Clean up code
       Add 401k/IRA stuff once that's done
+      Add optino for debt/manually add asset classes
   */
 	let savingsChart;
 
