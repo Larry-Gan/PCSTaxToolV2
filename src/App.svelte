@@ -127,6 +127,9 @@
 </div>
 
 
+<div>
+    <Chart {data}/>
+</div>
 <style>
   .index {
       text-align: center;
