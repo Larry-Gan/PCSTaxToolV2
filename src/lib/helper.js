@@ -93,3 +93,14 @@ export function generateRandomColors(numColors) {
     return num.toLocaleString("en-US", formatting_options);
   }
 
+  // plugin made to add spacing to charts
+  export const legendMargin = {
+    id: "legendMargin",
+    beforeInit: function (chart) {
+      const fitValue = chart.legend.fit;
+      chart.legend.fit = function fit() {
+        fitValue.bind(chart.legend)();
+        return (this.height += 10);
+      };
+    }
+  };

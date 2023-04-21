@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
   import taxData from './data.json';
-  import { generateRandomColors, formatting_options } from './helper.js';
+  import { generateRandomColors, formatting_options, legendMargin } from './helper.js';
   export let data;
   let chart;
+	Chart.register(legendMargin);
 
   // Handle updates to the chart
   $: if (chart){
@@ -37,6 +38,11 @@
         responsive: true,
         maintainAspectRatio: false,
         plugins : {
+          legend: {
+            labels: {
+              color: "rgba(255, 255, 255, 0.6)",
+              }
+          },
           tooltip : {
             // Remove label box
             boxWidth: 0,

@@ -1,7 +1,7 @@
 <script>
     import taxData from './lib/data.json';
     import * as helper from './lib/helper.js';
-    import Chart from './lib/Chart.svelte';
+    import Chart from './lib/Spending.svelte';
     import Simulator from './lib/Simulator.svelte';
 
     // Declare global variables to hold tax info
@@ -17,8 +17,7 @@
     let medicareTaxes = 0;
 
     // Simulator values
-    let simStartYear = 2022;
-    let simEndYear = 2065
+    let simNetIncome = 0;
 
     // May use this one later for updating text and pie chart
     function handleFormSubmission () {
@@ -37,6 +36,8 @@
             let taxAmount = govtSpendingPercents[i] * incomeTaxes;
             yourPayments.push(taxAmount);
         }
+
+        simNetIncome = afterTaxIncome;
 
         // Return data to fill in chart.js chart
         return yourPayments;
@@ -122,7 +123,7 @@
 <br>
 
 <div>
-    <!----><Simulator netIncome = {afterTaxIncome}/>
+    <!----><Simulator netIncome = {simNetIncome}/>
 </div>
 
 
