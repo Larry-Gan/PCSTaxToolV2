@@ -8,6 +8,8 @@
     let year = '2022';
     let marrStatus = 'Single';
     let grossIncome = 0;
+    let refundableTaxCredit = 0;
+    let nonRefundableTaxCredit = 0;
     let prevGrossIncome = 0;
     let afterTaxIncome = 0;
     let totalTaxes = 0;
@@ -61,7 +63,12 @@
         medicareTaxes = fica[1];
 
         // Update tax info
-        totalTaxes = incomeTaxes + socialSecurityTaxes + medicareTaxes;
+        totalTaxes = incomeTaxes + socialSecurityTaxes + medicareTaxes - nonRefundableTaxCredit;
+        totalTaxes = Math.max(totalTaxes, 0);
+        totalTaxes -= refundableTaxCredit;
+        incomeTaxes -= nonRefundableTaxCredit;
+        incomeTaxes = Math.max(incomeTaxes, 0);
+        incomeTaxes -= refundableTaxCredit;
         afterTaxIncome = grossIncome - totalTaxes;
 
         // Return grossIncome, which prevents variable from being changed on form submission
@@ -74,6 +81,10 @@
   <form on:submit|preventDefault={() => grossIncome = calcTaxes()}>
       <label for="fname">Yearly Income:</label>
       <input type="number" step=0.01 class = "income-entry" bind:value={grossIncome} on:input={calcTaxes}><br><br>
+      <label for="fname">Refundable Tax Credit:</label>
+      <input type="number" step=0.01 class = "refundable-entry" bind:value={refundableTaxCredit} on:input={calcTaxes}>
+      <label for="fname">Nonrefundable Tax Credit:</label>
+      <input type="number" step=0.01 class = "nonrefundable-entry" bind:value={nonRefundableTaxCredit} on:input={calcTaxes}><br><br>
       <label for="pin">Fiscal Year:</label>
       <select bind:value={year} on:change={calcTaxes}>
           {#each taxData.supportedYears as supportedYear}
@@ -115,5 +126,11 @@
   }
   .income-entry {
       width: 50%;
+  }
+  .refundable-entry {
+    width: 10%;
+  }
+  .nonrefundable-entry {
+    width: 10%;
   }
 </style>
