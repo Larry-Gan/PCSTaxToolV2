@@ -54,9 +54,14 @@
       }
   }
 
-  // helper function to calculate interest after one year
+  // helper function to calculate interest after one year, does not support interest if balance is negative
   function compoundInterest(initBalance, interest) {
-    return initBalance * (1 + (interest/100));
+    if (initBalance < 0) {
+      return initBalance;
+    } else {
+      return initBalance * (1 + (interest/100));
+    }
+    
   }
 
   // Declare variables to hold simulator info
@@ -86,7 +91,7 @@
             data: interestSavings
           },
           {
-            label: 'Cumulative Contributions',
+            label: 'Cumulative Net Contributions',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: nonInterestSavings
@@ -165,6 +170,9 @@
 <h2>
   Savings and Investment Simulator:
 </h2>
+<p>
+  This can simulate savings and retirement. To simulate retirement, set the Initial Balance to your savings at retirement, Net Income to 0, and expenses as Annual Expenses.
+</p>
 <form on:submit|preventDefault={updateSimulation}>
   <label for="fname">Start Year:</label>
   <input type="number" bind:value={startYear}>
@@ -177,8 +185,8 @@
   <label for="fname">Annual Expenses:</label>
   <input type="number" step=0.01 bind:value={expenses}><br><br>
   <label for="fname">Interest Rate:</label>
-  <input type="number" bind:value={interestRate}><br><br>
+  <input type="number" step=0.01 bind:value={interestRate}><br><br>
   <button type="submit" on:click={updateSimulation}>Simulate Savings!</button>
 </form>
 <br>
-<canvas bind:this={chartCanvas} id="Income Simulator"></canvas>
+<canvas bind:this={chartCanvas} id="incomeSimulator"></canvas>

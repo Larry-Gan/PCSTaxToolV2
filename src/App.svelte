@@ -127,20 +127,18 @@
 
 <br><br>
 <div>
-    <!----><Chart {data}/>
+    <Chart {data}/>
 </div>
 
 
 <br>
 
 <div>
-    <!----><Simulator netIncome = {simNetIncome}/>
+    <Simulator netIncome = {simNetIncome}/>
 </div>
 
+<br><br><br>
 
-<div>
-    <Chart {data}/>
-</div>
 <style>
   .index {
       text-align: center;

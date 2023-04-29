@@ -14,7 +14,7 @@
   }
 
   onMount(() => {
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('spendingChart');
     // Generate chart colors on load
     let colors = generateRandomColors(taxData["budgetgroup"].length);
     let backgroundcolors = colors[0];
@@ -73,7 +73,7 @@
   Tax Spending Visualization:
 </h2>
 <div>
-  <canvas id="myChart" width = "700" height = "700"></canvas>
+  <canvas id="spendingChart" width = "700" height = "700"></canvas>
 </div>
 
 
