@@ -64,15 +64,12 @@
 
         // Update tax info
         totalTaxes = incomeTaxes + socialSecurityTaxes + medicareTaxes - nonRefundableTaxCredit;
-        if (totalTaxes < 0) {
-            totalTaxes = 0;
-        }
-        afterTaxIncome = grossIncome - totalTaxes;
+        totalTaxes = Math.max(totalTaxes, 0);
         totalTaxes -= refundableTaxCredit;
-        if (totalTaxes < 0) {
-            afterTaxIncome -= totalTaxes;
-            totalTaxes = 0;
-        }
+        incomeTaxes -= nonRefundableTaxCredit;
+        incomeTaxes = Math.max(incomeTaxes, 0);
+        incomeTaxes -= refundableTaxCredit;
+        afterTaxIncome = grossIncome - totalTaxes;
 
         // Return grossIncome, which prevents variable from being changed on form submission
         return grossIncome;
@@ -129,5 +126,11 @@
   }
   .income-entry {
       width: 50%;
+  }
+  .refundable-entry {
+    width: 10%;
+  }
+  .nonrefundable-entry {
+    width: 10%;
   }
 </style>
