@@ -137,7 +137,7 @@
     <Simulator netIncome = {simNetIncome}/>
 </div>
 
-<br><br><br>
+<br><br>
 
 <style>
   .index {
