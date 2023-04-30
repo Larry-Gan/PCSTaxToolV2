@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
   import taxData from './data.json';
-  import { generateRandomColors, formatting_options } from './helper.js';
+  import { generateRandomColors, formatting_options, legendMargin } from './helper.js';
   export let data;
   let chart;
+	Chart.register(legendMargin);
 
   // Handle updates to the chart
   $: if (chart){
@@ -13,7 +14,7 @@
   }
 
   onMount(() => {
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('spendingChart');
     // Generate chart colors on load
     let colors = generateRandomColors(taxData["budgetgroup"].length);
     let backgroundcolors = colors[0];
@@ -37,6 +38,11 @@
         responsive: true,
         maintainAspectRatio: false,
         plugins : {
+          legend: {
+            labels: {
+              color: "rgba(255, 255, 255, 0.6)",
+              }
+          },
           tooltip : {
             // Remove label box
             boxWidth: 0,
@@ -63,6 +69,12 @@
   });
 </script>
   
-<canvas id="myChart" width = "700" height = "700"></canvas>
+<h2>
+  Tax Spending Visualization:
+</h2>
+<div>
+  <canvas id="spendingChart" width = "700" height = "700"></canvas>
+</div>
+
 
   
