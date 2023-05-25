@@ -26,18 +26,26 @@ export function calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus) {
     return incomeTaxes;
 }
 
-export function calcFicaTaxes(grossIncome, currYearTaxData, marrStatus) {
-// Calculate social security tax
-let socSec = 0;
-if (grossIncome > currYearTaxData["ss"]) {
-    socSec = currYearTaxData["ss"] * .062;
-} else {
-    socSec = grossIncome * .062;
-}
+export function calcFicaTaxes(grossIncome, marrStatus, currYearTaxData, medicareInfo) {
+    // Calculate social security tax
+    let socSec = 0;
+    if (grossIncome > currYearTaxData["ss"]) {
+        socSec = currYearTaxData["ss"] * .062;
+    } else {
+        socSec = grossIncome * .062;
+    }
 
-// Calculate medicare tax, honestly this can be improved
-let medicare = 0;
-if (marrStatus == "Single" || marrStatus == "Head") {
+    // Calculate medicare tax, honestly this can be improved
+    let medicare = 0;
+    let medicareCutoff = medicareInfo[marrStatus]["cutoff"];
+    let medicarePercents = medicareInfo["percents"]
+    if (grossIncome > medicareCutoff) {
+        medicare = medicareCutoff * medicarePercents[0];
+        medicare += (grossIncome - medicareCutoff) * medicarePercents[1];
+    } else {
+        medicare = grossIncome * medicarePercents[0];
+    }
+/*if (marrStatus == "Single" || marrStatus == "Head") {
     if (grossIncome > 200000) {
         medicare = 200000 * .0145
         medicare += (grossIncome - 200000) * .0235;
@@ -58,10 +66,10 @@ if (marrStatus == "Single" || marrStatus == "Head") {
     } else {
         medicare = grossIncome * .0145;
     }
-}
+}*/
 
-// Return both social security tax and medicare tax, to be split up later
-return [socSec, medicare]
+    // Return both social security tax and medicare tax, to be split up later
+    return [socSec, medicare];
 }
 
 export function generateRandomColors(numColors) {
