@@ -17,6 +17,7 @@
     let incomeTaxes = 0;
     let socialSecurityTaxes = 0;
     let medicareTaxes = 0;
+    let effectiveTaxRates = 0;
 
     // Simulator values
     let simNetIncome = 0;
@@ -78,6 +79,9 @@
         incomeTaxes -= refundableTaxCredit;
         afterTaxIncome = grossIncome - totalTaxes;
 
+        // Calculate effective tax rates
+        effectiveTaxRates = helper.calcEffectiveTaxRate(grossIncome, totalTaxes);
+
         // Return grossIncome, which prevents variable from being changed on form submission
         return grossIncome;
     }
@@ -125,6 +129,7 @@
 <p>Total Income Taxes Paid: {helper.turnToDollar(incomeTaxes)}</p>
 <p>Total Medicare Taxes Paid: {helper.turnToDollar(medicareTaxes)}</p>
 <p>Total Social Security Taxes Paid: {helper.turnToDollar(socialSecurityTaxes)}</p>
+<p>Total Effective Tax Rates: {effectiveTaxRates}%</p>
 
 <br><br>
 <div>

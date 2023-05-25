@@ -45,28 +45,6 @@ export function calcFicaTaxes(grossIncome, marrStatus, currYearTaxData, medicare
     } else {
         medicare = grossIncome * medicarePercents[0];
     }
-/*if (marrStatus == "Single" || marrStatus == "Head") {
-    if (grossIncome > 200000) {
-        medicare = 200000 * .0145
-        medicare += (grossIncome - 200000) * .0235;
-    } else {
-        medicare = grossIncome * .0145;
-    }
-} else if (marrStatus == "Separate") {
-    if (grossIncome > 125000) {
-        medicare = 125000 * .0145
-        medicare += (grossIncome - 125000) * .0235;
-    } else {
-       medicare = grossIncome * .0145;
-    }
-} else if (marrStatus == "Together") {
-    if (grossIncome > 250000) {
-        medicare = 250000 * .0145
-        medicare += (grossIncome - 250000) * .0235;
-    } else {
-        medicare = grossIncome * .0145;
-    }
-}*/
 
     // Return both social security tax and medicare tax, to be split up later
     return [socSec, medicare];
@@ -89,17 +67,26 @@ export function generateRandomColors(numColors) {
 
     // Return the color of the pie and the pie outline
     return [pieColor, pieOutlineColor];
-  }
+}
 
   
-  export function turnToDollar(num) {
+export function turnToDollar(num) {
     // num.toLocaleString errors when run on null values, there's probably a better way to fix this issue
     if (num == null) {
         num = 0;
     }
     
     return num.toLocaleString("en-US", formatting_options);
-  }
+}
+
+export function calcEffectiveTaxRate(totalIncome, totalTax) {
+    // Calculate effective tax rate
+    let rate = 100 * totalTax / totalIncome;
+
+    // Round effective rate
+    rate = +rate.toFixed(2);
+    return rate;
+}
 
   // plugin made to add spacing to charts
   export const legendMargin = {
