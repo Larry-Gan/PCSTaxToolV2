@@ -64,7 +64,8 @@
         incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus);
 
         // Calculate fica
-        let fica = helper.calcFicaTaxes(grossIncome, currYearTaxData, marrStatus);
+        let medicareInfo = taxData["medicare"]
+        let fica = helper.calcFicaTaxes(grossIncome, marrStatus, currYearTaxData, medicareInfo);
         socialSecurityTaxes = fica[0];
         medicareTaxes = fica[1];
 
