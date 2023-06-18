@@ -18,6 +18,10 @@
     let socialSecurityTaxes = 0;
     let medicareTaxes = 0;
     let effectiveTaxRates = 0;
+    let shortTermCapitalGains = 0;
+    let longTermCapitalGains = 0;
+    let shortTermCapitalGainsTax = 0;
+    let longTermCapitalGainsTax = 0;
 
     // Simulator values
     let simNetIncome = 0;
@@ -62,9 +66,11 @@
         let taxableIncome = Math.max(grossIncome - standardDeduction, 0);
 
         // Calculate income tax
-        incomeTaxes = helper.calcIncomeTaxes(taxableIncome, currYearTaxData, marrStatus);
+        let ordinaryRates = helper.calcIncomeTaxes(taxableIncome, shortTermCapitalGains, currYearTaxData, marrStatus);
+        incomeTaxes = ordinaryRates.incomeTaxes;
+        shortTermCapitalGainsTax = ordinaryRates.capitalGains;
 
-        // Calculate fica
+        // Calculate fica, capital gains is exempted from fica
         let medicareInfo = taxData["medicare"]
         let fica = helper.calcFicaTaxes(grossIncome, marrStatus, currYearTaxData, medicareInfo);
         socialSecurityTaxes = fica[0];
@@ -98,6 +104,10 @@
       <input type="number" step=0.01 class = "refundable-entry" bind:value={refundableTaxCredit} on:input={calcTaxes}>
       <label for="fname">Nonrefundable Tax Credit:</label>
       <input type="number" step=0.01 class = "nonrefundable-entry" bind:value={nonRefundableTaxCredit} on:input={calcTaxes}><br><br>
+      <label for="fname">Short Term Capital Gains:</label>
+      <input type="number" step=0.01 class = "short-cap-gains" bind:value={shortTermCapitalGains} on:input={calcTaxes}>
+      <label for="fname">Long Term Capital Gains:</label>
+      <input type="number" step=0.01 class = "long-cap-gains" bind:value={longTermCapitalGains} on:input={calcTaxes}><br><br>
       <label for="pin">Fiscal Year:</label>
       <select bind:value={year} on:change={calcTaxes}>
           {#each taxData.supportedYears as supportedYear}
@@ -129,6 +139,7 @@
 <p>Total Income Taxes Paid: {helper.turnToDollar(incomeTaxes)}</p>
 <p>Total Medicare Taxes Paid: {helper.turnToDollar(medicareTaxes)}</p>
 <p>Total Social Security Taxes Paid: {helper.turnToDollar(socialSecurityTaxes)}</p>
+<p>Total Short Term Capital Gains Taxes Paid: {helper.turnToDollar(shortTermCapitalGainsTax)}</p>
 <p>Total Effective Tax Rates: {effectiveTaxRates}%</p>
 
 <br><br>
